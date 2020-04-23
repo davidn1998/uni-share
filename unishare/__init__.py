@@ -1,4 +1,5 @@
 from flask import Flask
+from unishare.database import db
 
 def create_app(test_config=None):
     # Create the app
@@ -14,6 +15,9 @@ def create_app(test_config=None):
     else:
         # Load tbe test config if passed in
         app.config.from_mapping(test_config)
+
+    # Load Database
+    db.init_app(app)
 
     # test app
     @app.route('/')
