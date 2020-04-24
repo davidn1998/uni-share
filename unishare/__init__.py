@@ -26,4 +26,8 @@ def create_app(test_config=None):
     def test():
         return 'Welcome to Uni Share'
 
+    # Import and register auth blueprint
+    from unishare import auth
+    app.register_blueprint(auth.bp)
+
     return app
