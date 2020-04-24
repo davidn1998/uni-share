@@ -18,6 +18,8 @@ def create_app(test_config=None):
 
     # Load Database
     db.init_app(app)
+    with app.app_context():
+        db.create_all()
 
     # test app
     @app.route('/')
