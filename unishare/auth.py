@@ -17,7 +17,7 @@ from unishare.database import *
 # Create Blueprint for authorization views
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-bp.route('/register', methods=['GET','POST'])
+@bp.route('/register', methods=['GET','POST'])
 def register():
     '''View at /auth/register 
 
@@ -31,6 +31,7 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        error = None
         
         # Validate that username and password are not empty
         # and that the username does not already exist
@@ -56,7 +57,7 @@ def register():
     # If method is GET or there were errors in POST then show register.html
     return render_template('auth/register.html')
 
-bp.route('/login', methods=['GET', 'POST'])
+@bp.route('/login', methods=['GET', 'POST'])
 def login():
     '''View at /auth/login 
 
@@ -70,15 +71,18 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        error=None
+        no_user = 'The username and password that you entered did not match our records.\
+                Please double-check and try again.'
         
         # Find User with username
         user = User.query.filter_by(username=username).first()
 
         # Validate that user exists and that password is correct
         if user is None:
-            error = 'Incorrect username.'
+            error = no_user
         elif not check_password_hash(user.password, password):
-            error = 'Incorrect password'
+            error = no_user
 
         # If there are no errors, clear session and create session with user_id
         # Then redirect to index page
@@ -94,7 +98,7 @@ def login():
     # If method is GET or there were errors in POST then show login.html
     return render_template('auth/login.html')
 
-@bp.before_app_request()
+@bp.before_app_request
 def load_logged_in_user():
     '''Load data of logged in user
 

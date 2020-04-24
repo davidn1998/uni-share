@@ -16,20 +16,20 @@
 
       <div class="collapse navbar-collapse" id="nav-content">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home {% block home-current %}{% endblock %}</a>
+          <li class="nav-item {% block homecurrent %}{% endblock %}">
+            <a class="nav-link" href="#">Home</a>
           </li>
           {% if g.user %}
-          <li class="nav-item">{{g.user.username}} {% block user-current %}{% endblock %}</li>
+          <li class="nav-item {% block usercurrent %}{% endblock %}">{{g.user['username']}}</li>
           <li class="nav-item">
             <a href="{{url_for('auth.logout')}}" class="nav-link">Log Out</a>
           </li>
           {% else %}
-          <li class="nav-item">
-            <a href="{{url_for('auth.register')}}" class="nav-link">Register {% block register-current %}{% endblock %}</a>
+          <li class="nav-item {% block registercurrent %}{% endblock %}">
+            <a href="{{url_for('auth.register')}}" class="nav-link">Register</a>
           </li>
-          <li class="nav-item">
-            <a href="{{url_for('auth.login')}}" class="nav-link">Log In {% block login-current %}{% endblock %}</a>
+          <li class="nav-item {% block logincurrent %}{% endblock %}">
+            <a href="{{url_for('auth.login')}}" class="nav-link">Log In</a>
           </li>
           {% endif %}
         </ul>
@@ -41,9 +41,11 @@
     </nav>
     <section class="content container">
         <header>
+          <h1>
             {% block header %}
             
             {% endblock  %}
+          </h1>
         </header>
         {% for message in get_flashed_messages() %}
             <div class="flash">{{message}}</div>
