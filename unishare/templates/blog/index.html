@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+
+    {% block title %}
+        {% if g.user %}
+            Hello, {{ g.user.username.capitalize()}}
+        {% else %}
+            Home
+        {% endif %}
+    {% endblock %}
+
+{% endblock %}
+
+{% block homecurrent %}
+    active
+{% endblock  %}
+
+{% block content %}
+
+    {% if g.user %}
+        <h3 class="text-center mb-5 mt-5 create-new-post">
+            <a class="action" href="{{url_for('blog.create')}}">Create New Post</a>
+        </h3>
+    {% endif %}
+
+    {% for post in posts %}
+        <article class="post">
+            <div class="card mb-5">
+                <div class="card-body">
+                  <h6 class="card-subtitle mb-2 text-muted">{{post.username.capitalize()}} - {{post.created.strftime('%d/%m/%Y')}}</h6>
+                  <h5 class="card-title"> {{post.title}} </h5>
+                  <hr>
+                  <p class="card-text"> {{post.body}} </p>
+                  {% if g.user['id'] == post.author_id %}
+                  <a href="{{url_for('blog.update', id=post.id)}}" class="card-link">Edit Post</a>
+                  {% endif %}
+                </div>
+              </div>
+        </article>
+    {% endfor %}
+
+{% endblock %}

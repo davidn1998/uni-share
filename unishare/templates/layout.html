@@ -9,7 +9,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-md mb-4 navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">UniShare</a>
+      <a class="navbar-brand" href="{{url_for('index')}}">UniShare</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-content" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -17,10 +17,12 @@
       <div class="collapse navbar-collapse" id="nav-content">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item {% block homecurrent %}{% endblock %}">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" href="{{url_for('index')}}">Home</a>
           </li>
           {% if g.user %}
-          <li class="nav-item {% block usercurrent %}{% endblock %}">{{g.user['username']}}</li>
+          <li class="nav-item {% block usercurrent %}{% endblock %}">
+            <a href="" class="nav-link">Profile</a>
+          </li>
           <li class="nav-item">
             <a href="{{url_for('auth.logout')}}" class="nav-link">Log Out</a>
           </li>
@@ -41,7 +43,7 @@
     </nav>
     <section class="content container">
         <header>
-          <h1>
+          <h1 class="text-center">
             {% block header %}
             
             {% endblock  %}

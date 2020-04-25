@@ -21,13 +21,13 @@ def create_app(test_config=None):
     with app.app_context():
         db.create_all()
 
-    # test app
-    @app.route('/')
-    def test():
-        return 'Welcome to Uni Share'
-
     # Import and register auth blueprint
     from unishare import auth
     app.register_blueprint(auth.bp)
+
+    # Import and register blog blueprint
+    from unishare import blog
+    app.register_blueprint(blog.bp)
+    app.add_url_rule('/', endpoint='index')
 
     return app
