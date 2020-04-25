@@ -2,6 +2,7 @@ import tempfile
 import pytest
 from unishare import create_app
 from unishare.database import *
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
 @pytest.fixture
@@ -14,8 +15,8 @@ def app():
         db.create_all()
 
         # Create users
-        user1 = User(username='test1', password='password1')
-        user2 = User(username='test2', password='password2')
+        user1 = User(username='test1', password=generate_password_hash('password1'))
+        user2 = User(username='test2', password=generate_password_hash('password2'))
         
         # Add users to database
         db.session.add(user1)

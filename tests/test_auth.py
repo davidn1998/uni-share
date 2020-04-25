@@ -1,6 +1,7 @@
 import pytest
 from flask import g, session
 from unishare.database import *
+from werkzeug.security import check_password_hash, generate_password_hash
 
 def test_register(client, app):
     assert client.get('/auth/register').status_code == 200
@@ -25,24 +26,17 @@ def test_register_validate_input(client, username, password, message):
     )
     assert message in response.data
 
-# def test_login(client, auth):
-#     assert client.get('/auth/login').status_code == 200
-#     response = client.get('/auth/login')
-#     assert response.headers['Location'] == 'http://localhost/auth/login'
-#     response = client.post(
-#     'auth/login',
-#     data = {'username': 'test1', 'password': 'password1'}
-#     )
+def test_login(client, auth, app):
+    response = auth.login()
+    assert response.headers['Location'] == 'http://localhost/'
 
-#     assert response.headers['Location'] == 'http://localhost/'
-
-#     with client:
-#         client.get('/')
-#         assert session['user_id'] == 1
-#         assert g.user['username'] == 'test1'
+    with client:
+        client.get('/')
+        assert session['user_id'] == 1
+        assert g.user.username == 'test1'
 
 @pytest.mark.parametrize(('username', 'password', 'message'), (
-    ('a', 'password', b'The username and password that you entered did not match our records.\
+    ('a', 'password1', b'The username and password that you entered did not match our records.\
                 Please double-check and try again.'),
     ('test1', 'a', b'The username and password that you entered did not match our records.\
                 Please double-check and try again.'),

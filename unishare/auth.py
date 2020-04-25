@@ -35,12 +35,8 @@ def register():
         
         # Validate that username and password are not empty
         # and that the username does not already exist
-        if username is None:
-            error = 'Username is required.'
-        elif ' ' in username:
+        if ' ' in username:
             error = 'Username cannot contain spaces.'
-        elif password is None:
-            error = 'Password is required.'
         elif ' ' in password:
             error = 'Password cannot contain spaces.'
         elif User.query.filter_by(username=username).first() is not None:
