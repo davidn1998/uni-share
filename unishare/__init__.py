@@ -1,5 +1,6 @@
 from flask import Flask
 from unishare.database import db
+import os
 
 def create_app(testing=False):
     # Create the app
@@ -14,7 +15,11 @@ def create_app(testing=False):
         app.config.from_pyfile('config.py', silent=True)
     else:
         # Load the test config if passed in
-        app.config.from_pyfile('test_config.py', silent=True)
+        app.config.update(
+            SECRET_KEY = os.environ['SECRET_KEY'],
+            SQLALCHEMY_DATABASE_URI = os.environ['POSTGRES_TEST_DB'],
+            TESTING = True
+        )
 
     # Load Database
     db.init_app(app)
