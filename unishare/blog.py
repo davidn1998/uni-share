@@ -48,18 +48,10 @@ def create():
         error = None
 
         user = User.query.get(g.user.id)
-
-        # Validate title
-        if not title:
-            error = 'Title is required'
         
-        # Flash an errors
-        if error is not None:
-            flash(error)
-        else:
-            # Otherwise add post to database and redirect to index page
-            user.add_post(title=title, body=body)
-            return redirect(url_for('blog.index'))
+        # Otherwise add post to database and redirect to index page
+        user.add_post(title=title, body=body)
+        return redirect(url_for('blog.index'))
     
     return render_template('blog/create.html')
 
@@ -98,21 +90,14 @@ def update(id):
         title = request.form['title']
         body = request.form['body']
         error = None
-
-        # Validate title
-        if not title:
-            error = 'Title is required'
         
-        # Flash any errors
-        if error is not None:
-            flash(error)
-        else:
-            # Update title and/or body for post in database
-            # Then redirect back to index page
-            post.title = title
-            post.body = body
-            db.session.commit()
-            return redirect(url_for('blog.index'))
+        
+        # Update title and/or body for post in database
+        # Then redirect back to index page
+        post.title = title
+        post.body = body
+        db.session.commit()
+        return redirect(url_for('blog.index'))
     
     # If method is GET then show update.html (form)
     return render_template('blog/update.html', post=post)
