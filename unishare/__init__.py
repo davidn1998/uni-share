@@ -1,7 +1,7 @@
 from flask import Flask
 from unishare.database import db
 
-def create_app(test_config=None):
+def create_app(testing=False):
     # Create the app
     app = Flask(__name__, instance_relative_config=True)
     
@@ -9,12 +9,12 @@ def create_app(test_config=None):
     app.config.from_object('config')
 
     # Overide default configuration
-    if test_config is None:
+    if testing == False:
         # Load the instance config when not testing
         app.config.from_pyfile('config.py', silent=True)
     else:
-        # Load tbe test config if passed in
-        app.config.from_mapping(test_config)
+        # Load the test config if passed in
+        app.config.from_pyfile('test_config.py', silent=True)
 
     # Load Database
     db.init_app(app)

@@ -29,18 +29,22 @@ def register():
     '''
     # If method is post get username and password from form
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form['username'].strip()
+        password = request.form['password'].strip()
         error = None
         
         # Validate that username and password are not empty
         # and that the username does not already exist
         if username is None:
             error = 'Username is required.'
+        elif ' ' in username:
+            error = 'Username cannot contain spaces.'
         elif password is None:
             error = 'Password is required.'
+        elif ' ' in password:
+            error = 'Password cannot contain spaces.'
         elif User.query.filter_by(username=username).first() is not None:
-            error = f'User {username} is already registered.'
+            error = f'{username} is already registered.'
 
         # If there are no errors, create new user and commit to database
         # Then redirect to login page
