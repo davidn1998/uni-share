@@ -1,6 +1,5 @@
 import tempfile
 import pytest
-from werkzeug.security import check_password_hash, generate_password_hash
 from unishare import create_app
 from unishare.database import *
 
@@ -9,9 +8,6 @@ from unishare.database import *
 def app():
     # Create app with test mappings
     app = create_app(testing=True)
-    
-    # Load Database
-    db.init_app(app)
 
     with app.app_context():
         db.drop_all()
