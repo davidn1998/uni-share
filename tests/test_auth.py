@@ -51,3 +51,16 @@ def test_logout(client, auth):
     with client:
         auth.logout()
         assert 'user_id' not in session
+
+@pytest.mark.parametrize(('path'), (
+    '/auth/login',
+    '/auth/register'
+))
+def test_already_logged_in(client, auth, path):
+    auth.login()
+
+    with client:
+        response = client.get(path)
+        assert response.headers['Location'] == 'http://localhost/'
+
+
