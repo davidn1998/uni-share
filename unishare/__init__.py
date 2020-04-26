@@ -17,7 +17,7 @@ def create_app(testing=False):
         # Load the test config if passed in
         app.config.update(
             SECRET_KEY = 'test123',
-            SQLALCHEMY_DATABASE_URI = os.environ['POSTGRES_TEST_DB'],
+            SQLALCHEMY_DATABASE_URI = 'postgresql://foo:bar@localhost:5432/testing',
             TESTING = True
         )
 
