@@ -21,7 +21,9 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 def register():
     '''View at /auth/register 
 
-    With GET -> returns HTML with a form to fill out.
+    With GET -> 
+        redirects to index if user is logged in
+        returns HTML with a form to fill out if no user is logged in
 
     With POST -> When the form is submitted, it will validate their input and either 
     show the form again with an error message or
@@ -54,14 +56,20 @@ def register():
         # Flash store error message so the template can use it
         flash(error)
     
-    # If method is GET or there were errors in POST then show register.html
-    return render_template('auth/register.html')
+    if g.user is None:
+        # Show register page with registration
+        return render_template('auth/register.html')
+    else:
+        # Redirect to index page
+        return redirect(url_for('index'))
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     '''View at /auth/login 
 
-    With GET -> returns HTML with a form to fill out.
+    With GET -> 
+        redirects to index if user is logged in
+        returns HTML with a form to fill out if no user is logged in
 
     With POST -> When the form is submitted, it will validate their input and either 
     show the form again with an error message or
@@ -95,8 +103,13 @@ def login():
         # Flash store error message so the template can use it
         flash(error)
     
-    # If method is GET or there were errors in POST then show login.html
-    return render_template('auth/login.html')
+    if g.user is None:
+        # Show login page with login form
+        return render_template('auth/login.html')
+    else:
+        # Redirect to index page
+        return redirect(url_for('index'))
+        
 
 @bp.before_app_request
 def load_logged_in_user():
