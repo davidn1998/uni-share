@@ -11,6 +11,7 @@ Methods
 
 import functools
 from flask import Blueprint, redirect, render_template, request, session, flash, url_for, g
+import requests
 from werkzeug.security import check_password_hash, generate_password_hash
 from unishare.database import *
 
@@ -51,7 +52,7 @@ def register():
             db.session.add(user)
             print(f'{username} has successfully registered.')
             db.session.commit()
-            return redirect(url_for('auth.login'))
+            return load_user_into_session(user)
         
         # Flash store error message so the template can use it
         flash(error)
@@ -95,10 +96,7 @@ def login():
         # If there are no errors, clear session and create session with user_id
         # Then redirect to index page
         if error is None:
-            session.clear()
-            session['user_id'] = user.id
-            return redirect(url_for('index'))
-
+            return load_user_into_session(user)
         
         # Flash store error message so the template can use it
         flash(error)
@@ -109,7 +107,16 @@ def login():
     else:
         # Redirect to index page
         return redirect(url_for('index'))
-        
+
+def load_user_into_session(user):
+        '''Load a user into the session (login a user)
+
+        Clear the session and add the users id to the session.
+        Then redirect to the index page
+        '''
+        session.clear()
+        session['user_id'] = user.id
+        return redirect(url_for('index'))
 
 @bp.before_app_request
 def load_logged_in_user():

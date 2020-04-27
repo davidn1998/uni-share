@@ -9,7 +9,7 @@ def test_register(client, app):
         'auth/register',
         data = {'username': 'a', 'password': 'a'}
     )
-    assert response.headers['Location'] == 'http://localhost/auth/login'
+    assert response.headers['Location'] == 'http://localhost/'
     
     with app.app_context():
         assert User.query.filter_by(username='a').first() is not None
