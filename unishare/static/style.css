@@ -1,3 +1,8 @@
+header {
+    padding: 2rem 0;
+    border-bottom: 1px solid #bbb;
+}
+
 .flash {
     color: #B33A3A;
     text-align: center;
@@ -17,4 +22,21 @@
 .edit-buttons {
     min-width: 10rem;
     margin: auto;
+}
+
+.content {
+    border: 1px solid #bbb;
+}
+
+.details {
+    border-bottom: 1px solid #bbb;
+    margin: 2rem 0;
+}
+
+.posts {
+    padding: 2rem 0;
+}
+
+.user-form {
+    padding: 2rem;
 }

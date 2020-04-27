@@ -58,7 +58,7 @@ def create():
 def get_post(id, check_author=True):
     ''' Returns the post with the id
 
-    check_author is defined so that the function can be used to get a post with or without verifying 
+    Check_author is defined so that the function can be used to get a post with or without verifying 
     that the person accessing the post is the author
     '''
     # Get post with id
@@ -119,6 +119,31 @@ def delete(id):
 
     # Redirect to index page
     return redirect(url_for('blog.index'))
+
+@bp.route('/<username>')
+def profile(username):
+    ''' View a the profile page of a user
+
+    Will return the profile page either of the logged in user or another user
+    '''
+    logged_in=False
+    exists=False
+    posts=[]
+
+    # Check if the profile page is for the logged in user then return their profile
+    if g.user is not None:
+        if g.user.username == username:
+            logged_in=True
+
+    # Verify that the user exists
+    user = User.query.filter_by(username=username).first()
+    exists = user is not None
+
+    if exists:
+        posts = Post.query.filter_by(author_id=user.id)
+    
+    # Return profile page
+    return render_template('blog/profile.html', username=username, exists=exists, logged_in=logged_in, posts=posts) 
 
 
 
