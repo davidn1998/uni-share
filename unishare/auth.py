@@ -11,8 +11,9 @@ Methods
 
 import functools
 from flask import Blueprint, redirect, render_template, request, session, flash, url_for, g
-import requests
 from werkzeug.security import check_password_hash, generate_password_hash
+import requests
+import re
 from unishare.database import *
 
 # Create Blueprint for authorization views
@@ -35,13 +36,28 @@ def register():
         username = request.form['username'].strip()
         password = request.form['password'].strip()
         error = None
+
+        # Create a regex of special characters to validate against
+        regex = re.compile('[@!#$%^&*()<>?/\|}{~:]') 
         
         # Validate that username and password are not empty
-        # and that the username does not already exist
-        if ' ' in username:
+        if not username:
+            error = 'Username is required.'
+        elif not password:
+            error = 'Password is required.'
+        elif ' ' in username:
             error = 'Username cannot contain spaces.'
         elif ' ' in password:
             error = 'Password cannot contain spaces.'
+        # Validate that username does not contain special characters
+        elif regex.search(username) != None:
+            error = 'Username can only contain alphanumeric characters (letters A-Z, numbers 0-9) and underscores.'
+        # Validate the length of the username and password
+        elif len(username) > 15:
+            error = 'Username cannot be longer than 15 characters.'
+        elif len(password) < 8:
+            error = 'Password must be atleast 8 characters long.'
+        # Validate that the user does not already exist
         elif User.query.filter_by(username=username).first() is not None:
             error = f'{username} is already registered.'
 

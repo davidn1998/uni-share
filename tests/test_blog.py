@@ -66,6 +66,7 @@ def test_update(client, auth, app):
 def test_create_update_validate(client, auth, path):
     auth.login()
     response = client.post(path, data={'title':'', 'body':''})
+    assert b'Title is required.' in response.data
 
 def test_delete(client, auth, app):
     auth.login()
@@ -83,3 +84,9 @@ def test_no_posts(client, app):
         for post in Post.query.all():
             db.session.delete(post)
         assert b'NO POSTS' in client.get('/').data
+
+# @pytest.mark.parametrize(('username', 'message'),(
+#     ('test1', '')
+# ))
+# def test_profile(client, auth):
+    

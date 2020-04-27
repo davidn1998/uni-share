@@ -7,7 +7,7 @@ def test_register(client, app):
     assert client.get('/auth/register').status_code == 200
     response = client.post(
         'auth/register',
-        data = {'username': 'a', 'password': 'a'}
+        data = {'username': 'a', 'password': 'abcd1234'}
     )
     assert response.headers['Location'] == 'http://localhost/'
     
@@ -15,9 +15,14 @@ def test_register(client, app):
         assert User.query.filter_by(username='a').first() is not None
 
 @pytest.mark.parametrize(('username', 'password', 'message'), (
+    ('', '', b'Username is required.'),
+    ('a', '', b'Password is required.'),
     ('b b', 'a', b'Username cannot contain spaces.'),
     ('a', 'b b', b'Password cannot contain spaces'),
-    ('test1', 'test', b'test1 is already registered.'),
+    ('/b', 'a', b'Username can only contain alphanumeric characters (letters A-Z, numbers 0-9) and underscores.'),
+    ('aaaaaaaaaaaaaaaa', 'b', b'Username cannot be longer than 15 characters.'),
+    ('a', 'b', b'Password must be atleast 8 characters long.'),
+    ('test1', 'test1234', b'test1 is already registered.')
 ))
 def test_register_validate_input(client, username, password, message):
     response = client.post(
