@@ -24,20 +24,28 @@
         </h3>
     {% endif %}
 
+    {% if posts|length < 1 %}
+
+    <h1 class="text-center mt-5">NO POSTS</h1>
+    
+    {% else %}
+
     {% for post in posts %}
-        <article class="post">
-            <div class="card mb-5">
-                <div class="card-body">
-                  <h6 class="card-subtitle mb-2 text-muted">{{post.username}} - {{post.created.strftime('%d/%m/%Y')}}</h6>
-                  <h5 class="card-title"> {{post.title}} </h5>
-                  <hr>
-                  <p class="card-text"> {{post.body}} </p>
-                  {% if g.user['id'] == post.author_id %}
-                  <a href="{{url_for('blog.update', id=post.id)}}" class="card-link">Edit Post</a>
-                  {% endif %}
-                </div>
-              </div>
-        </article>
+    <article class="post">
+        <div class="card mb-5">
+            <div class="card-body">
+              <h6 class="card-subtitle mb-2 text-muted">{{post.username}} - {{post.created.strftime('%d/%m/%Y')}}</h6>
+              <h5 class="card-title"> {{post.title}} </h5>
+              <hr>
+              <p class="card-text"> {{post.body}} </p>
+              {% if g.user['id'] == post.author_id %}
+              <a href="{{url_for('blog.update', id=post.id)}}" class="card-link">Edit Post</a>
+              {% endif %}
+            </div>
+          </div>
+    </article>
     {% endfor %}
+    
+    {% endif %}
 
 {% endblock %}

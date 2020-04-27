@@ -75,3 +75,11 @@ def test_delete(client, auth, app):
     with app.app_context():
         post = Post.query.get(1)
         assert post is None
+
+def test_no_posts(client, app):
+    assert b'NO POSTS' not in client.get('/').data
+
+    with app.app_context():
+        for post in Post.query.all():
+            db.session.delete(post)
+        assert b'NO POSTS' in client.get('/').data
