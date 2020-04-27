@@ -138,14 +138,14 @@ def profile(username):
 
     Will return the profile page either of the logged in user or another user
     '''
-    logged_in=False
+    my_profile=False
     exists=False
     posts=[]
 
     # Check if the profile page is for the logged in user then return their profile
     if g.user is not None:
         if g.user.username == username:
-            logged_in=True
+            my_profile=True
 
     # Verify that the user exists
     user = User.query.filter_by(username=username).first()
@@ -155,7 +155,7 @@ def profile(username):
         posts = Post.query.filter_by(author_id=user.id)
     
     # Return profile page
-    return render_template('blog/profile.html', username=username, exists=exists, logged_in=logged_in, posts=posts) 
+    return render_template('blog/profile.html', username=username, exists=exists, my_profile=my_profile, posts=posts) 
 
 
 

@@ -3,31 +3,38 @@
 {% block title %}
 
     {% if exists %}
-
-        {{username}}
-    
-    {% else %}
-    
-        Profile
-    
+        {{username}}  
+    {% else %}  
+        Profile   
     {% endif %}
 
 {% endblock  %}
 
 {% block header %}
+
     {{username}}
+
 {% endblock  %}
 
 {% block content  %}
 
 <div class="main container">
+
     <div class="details">
         <h2>Posts</h2>
+        {% if g.user %}
+            <button class="btn btn-primary btn-profile">
+            {% if my_profile %}
+                Edit Profile
+            {% else %}
+                Message
+            {% endif %}
+            </button>
+        {% endif %}
     </div>
+
     <div class="posts">
-
         {% if exists or logged_in %}
-
             {% for post in posts %}
             <article class="post">
                 <div class="card mb-5">
@@ -42,15 +49,10 @@
                     </div>
                 </div>
             </article>
-            {% endfor %}
-        
+            {% endfor %}     
         {% else %}
-
-            <b>This account doesn’t exist.
-            Try searching for another.</b>
-
+            <b>This account does not exist. Try searching for another.</b>
         {% endif %}
-
     </div>
 
 </div>

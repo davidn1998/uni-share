@@ -37,6 +37,9 @@ header {
     padding: 2rem 0;
 }
 
-.user-form {
-    padding: 2rem;
+.details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 2rem;
 }

@@ -7,7 +7,7 @@
 {% block header %}
 
     {% if g.user %}
-        Hello, {{ g.user.username.capitalize()}}
+        Hello, {{ g.user.username}}
     {% else %}
         Home
     {% endif %}
