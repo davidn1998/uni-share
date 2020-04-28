@@ -1,6 +1,11 @@
+*, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 header {
     padding: 2rem 0;
-    border-bottom: 1px solid #bbb;
 }
 
 .flash {
@@ -26,11 +31,8 @@ header {
 
 .content {
     border: 1px solid #bbb;
-}
-
-.details {
-    border-bottom: 1px solid #bbb;
-    margin: 2rem 0;
+    border-top: none;
+    padding-bottom: 2rem;
 }
 
 .posts {
@@ -42,4 +44,66 @@ header {
     flex-direction: row;
     justify-content: space-between;
     padding-bottom: 2rem;
+    border-bottom: 1px solid #bbb;
+    margin: 2rem 0;
+}
+
+.messages {
+    border-top: 1px solid #bbb;
+}
+
+.section-button {
+    font-size: 2rem;
+    color: #fff;
+    border: 1px solid #bbb;
+    border-bottom: none;
+    display: inline;
+    padding: 0 1rem;
+    border-radius: 10%;
+    background-color: #7EC8E3;
+    text-decoration: none;
+}
+
+.section-button:hover {
+    text-decoration: none;
+}
+
+.inline-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.link-button {
+    border: none;
+    background-color: #555555;
+    color: #fff;
+    padding: 15px 15px;
+    margin: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    min-width: 120px;
+    display:block
+}
+
+.max-width {
+    width: 100%;
+    width: 100%;
+}
+
+.link-button:hover {
+    background-color: #008CBA;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.active-tab {
+    background-color: #008CBA;
+}
+
+#edit-ta {
+    min-height: 10rem;
 }

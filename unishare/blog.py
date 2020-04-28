@@ -23,7 +23,7 @@ def index():
     Show all posts
     '''
     # Get all post data
-    posts = Post.query.join(User).with_entities(Post.author_id, Post.title, Post.body, Post.created, Post.id, User.username).order_by(Post.created.desc()).all()
+    posts = Post.query.order_by(Post.created.desc()).all()
 
     return render_template('blog/index.html', posts=posts)
 
@@ -152,13 +152,17 @@ def profile(username):
     exists = user is not None
 
     if exists:
-        posts = Post.query.filter_by(author_id=user.id)
+        posts = user.posts.order_by(Post.created.desc()).all()
     
-    # Return profile page
-    return render_template('blog/profile.html', username=username, exists=exists, my_profile=my_profile, posts=posts) 
+    # Return profile pages
+    return render_template('user/profile.html', username=username, exists=exists, my_profile=my_profile, posts=posts)
 
+@bp.route('/messages')
+@login_required
+def messages():
+    ''' Get all messages for the logged in user.
+    '''
+    user = User.query.get(g.user.id)
+    messages = user.received_messages.order_by(Message.date.desc()).all()
 
-
-
-
-
+    return render_template('user/messages.html', messages=messages)

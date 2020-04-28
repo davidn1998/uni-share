@@ -20,9 +20,11 @@
 
 {% block content %}
 
+<div class="main container">
+
     {% if g.user %}
         <h3 class="text-center mb-5 mt-5 create-new-post">
-            <a class="action" href="{{url_for('blog.create')}}">Create New Post</a>
+            <a class="link-button" href="{{url_for('blog.create')}}">Create New Post</a>
         </h3>
     {% endif %}
 
@@ -38,19 +40,29 @@
         <article class="post">
             <div class="card mb-5">
                 <div class="card-body">
-                  <h6 class="card-subtitle mb-2 text-muted">{{post.username}} - {{post.created.strftime('%d/%m/%Y')}}</h6>
+                  <h6 class="card-subtitle mb-2 text-muted">{{post.author.username}} - {{post.created.strftime('%d/%m/%Y')}}</h6>
                   <h5 class="card-title"> {{post.title}} </h5>
                   <hr>
                   <p class="card-text"> {{post.body}} </p>
+                  <hr>
                   {% if g.user['id'] == post.author_id %}
-                  <a href="{{url_for('blog.update', id=post.id)}}" class="card-link">Edit Post</a>
+                  <div class="inline-buttons">
+                    <a href="{{url_for('blog.update', id=post.id)}}" class="link-button">Edit Post</a>
+                    <form class="" action="{{url_for('blog.delete', id=post.id)}}" method="post">
+                        <div class="form-button">
+                            <button class="link-button" onclick="return confirm('Are you sure you want to delete this post?\nThis action cannot be undone!')";>Delete Post</button>
+                        </div>
+                    </form>
+                </div>
                   {% endif %}
                 </div>
-              </div>
+            </div>
         </article>
         {% endfor %}
 
     </div>
+
+</div>
     
     {% endif %}
 
