@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+
+    {% block title %}
+        Messages
+    {% endblock  %}
+
+{% endblock  %}
+
+{% block content %}
+<div class="inline-buttons">
+    <a class="link-button active-tab" href="{{url_for('blog.inbox')}}">Inbox</a>
+    <a class="link-button" href="{{url_for('blog.sent')}}">Sent</a>
+</div>
+
+<div class="posts messages">
+    
+    {% for message in messages %}
+    <article class="post">
+        <div class="card mb-5">
+            <div class="card-body">
+              <h6 class="card-subtitle mb-2 text-muted">From {{message.sender.username}}</h6>
+              <h5 class="card-title"> {{message.title}} </h5>
+              <hr>
+              <p class="card-text"> {{message.body}} </p>
+
+            </div>
+          </div>
+    </article>
+    {% endfor %}
+
+</div>
+
+{% endblock  %}

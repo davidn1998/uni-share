@@ -23,9 +23,7 @@
 <div class="main container">
 
     {% if g.user %}
-        <h3 class="text-center mb-5 mt-5 create-new-post">
             <a class="link-button" href="{{url_for('blog.create')}}">Create New Post</a>
-        </h3>
     {% endif %}
 
     {% if posts|length < 1 %}

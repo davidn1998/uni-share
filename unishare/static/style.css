@@ -14,10 +14,6 @@ header {
     margin: 1.5rem 0;
 }
 
-.create-new-post a{
-    text-decoration: none;
-}
-
 .form-button {
     width: 100%;
     display: flex;
@@ -43,9 +39,13 @@ header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     padding-bottom: 2rem;
     border-bottom: 1px solid #bbb;
-    margin: 2rem 0;
+}
+
+.details h2{
+    margin: 0;
 }
 
 .messages {
@@ -71,7 +71,7 @@ header {
 .inline-buttons {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    align-items: center;
 }
 
 .link-button {

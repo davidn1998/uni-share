@@ -144,8 +144,7 @@ def profile(username):
 
     # Check if the profile page is for the logged in user then return their profile
     if g.user is not None:
-        if g.user.username == username:
-            my_profile=True
+        my_profile = g.user.username == username
 
     # Verify that the user exists
     user = User.query.filter_by(username=username).first()
@@ -157,12 +156,23 @@ def profile(username):
     # Return profile pages
     return render_template('user/profile.html', username=username, exists=exists, my_profile=my_profile, posts=posts)
 
-@bp.route('/messages')
+@bp.route('/messages/inbox')
 @login_required
-def messages():
-    ''' Get all messages for the logged in user.
+def inbox():
+    ''' Display the message inbox for the logged in user.
     '''
     user = User.query.get(g.user.id)
     messages = user.received_messages.order_by(Message.date.desc()).all()
 
-    return render_template('user/messages.html', messages=messages)
+    return render_template('user/inbox.html', messages=messages)
+
+@bp.route('/message/sent')
+@login_required
+def sent():
+    ''' Display messages sent by the logged in user
+    
+    '''
+    user = User.query.get(g.user.id)
+    messages = user.sent_messages.order_by(Message.date.desc()).all()
+
+    return render_template('user/sent.html', messages=messages)
