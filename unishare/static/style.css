@@ -81,7 +81,7 @@ header {
 
 .link-button {
     border: none;
-    background-color: #555555;
+    background-color: #008CBA;
     color: #fff;
     padding: 15px 15px;
     margin: 10px;
@@ -99,14 +99,14 @@ header {
 }
 
 .link-button:hover {
-    background-color: #008CBA;
+    background-color: rgb(16, 180, 235);
     color: #fff;
     cursor: pointer;
     text-decoration: none;
 }
 
 .active-tab {
-    background-color: #008CBA;
+    background-color: rgb(16, 180, 235);
 }
 
 #edit-ta {
@@ -120,4 +120,8 @@ header {
 
 .unread {
     background-color: rgb(159, 212, 255);
+}
+
+.card-text {
+    white-space: pre-line;
 }
