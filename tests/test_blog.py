@@ -84,23 +84,3 @@ def test_no_posts(client, app):
         for post in Post.query.all():
             db.session.delete(post)
         assert b'NO POSTS' in client.get('/').data
-
-@pytest.mark.parametrize(('path', 'message'),(
-    ('/test1', b'test1'),
-    ('/a', b'This account does not exist. Try searching for another.')
-))
-def test_profile_exists(client, auth, path, message):
-    response = client.get(path)
-    assert message in response.data
-
-@pytest.mark.parametrize(('path', 'button_text'),(
-    ('/test1', b'Edit Profile'),
-    ('/test2', b'Message')
-))
-def test_profile_message_edit(client, auth, path, button_text):
-    
-    with client:
-        auth.login()
-        response = client.get(path)
-        assert button_text in response.data
-    
