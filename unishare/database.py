@@ -19,6 +19,11 @@ class User(db.Model):
         db.session.add(post)
         db.session.commit()
 
+    def send_message(self, recipient_id, subject, body):
+        message = Message(sender_id=self.id, recipient_id=recipient_id, subject=subject, body=body)
+        db.session.add(message)
+        db.session.commit()
+
 # Create posts table
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -39,6 +44,7 @@ class Message(db.Model):
     date = db.Column(db.DateTime, default=datetime.now)
     subject = db.Column(db.String, nullable=False)
     body = db.Column(db.String, nullable=False)
+    read = db.Column(db.Boolean, default=False, nullable=False)
 
     sender = db.relationship("User", foreign_keys=[sender_id])
     recipient = db.relationship("User", foreign_keys=[recipient_id])

@@ -71,7 +71,12 @@ header {
 .inline-buttons {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     align-items: center;
+}
+
+.tabs {
+    justify-content: start;
 }
 
 .link-button {
@@ -106,4 +111,13 @@ header {
 
 #edit-ta {
     min-height: 10rem;
+}
+
+.post .username {
+    font-size: 22px;
+    color: #000;
+}
+
+.unread {
+    background-color: rgb(159, 212, 255);
 }

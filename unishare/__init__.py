@@ -35,4 +35,8 @@ def create_app(testing=False):
     app.register_blueprint(blog.bp)
     app.add_url_rule('/', endpoint='index')
 
+    # Import and register blog blueprint
+    from unishare import user
+    app.register_blueprint(user.bp)
+
     return app

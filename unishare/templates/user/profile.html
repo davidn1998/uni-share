@@ -28,10 +28,10 @@
         <h2>Posts</h2>
         {% if g.user %}
             {% if my_profile %}
-                <!-- <a href="" class="btn btn-primary btn-profile">Edit Profile</a> -->
-                <a href="{{url_for('blog.inbox')}}" class="link-button">Messages</a>
+                <!-- <a href="" class="link-button">Edit Profile</a> -->
+                <a href="{{url_for('user.inbox')}}" class="link-button">Messages</a>
             {% else %}
-                <a href="" class="link-button">Message</a>
+                <a href="{{url_for('user.compose', recipient_name=username)}}" class="link-button">Message</a>
             {% endif %}
         {% endif %}
     </div>
@@ -45,7 +45,7 @@
             <article class="post">
                 <div class="card mt-5">
                     <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted">{{post.author.username}} - {{post.created.strftime('%d/%m/%Y')}}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">{{post.created.strftime('%d/%m/%Y')}}</h6>
                     <h5 class="card-title"> {{post.title}} </h5>
                     <hr>
                     <p class="card-text"> {{post.body}} </p>
