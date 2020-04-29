@@ -89,14 +89,14 @@ def compose(recipient_name):
         if not subject:
             error = 'Subject is required.'
         if not body:
-            error = 'Body is required'
+            error = 'Body is required.'
 
         if error is not None:
             flash(error)
         else:
             # Create a new message and add to database
             g.user.send_message(recipient_id=recipient.id, subject=subject, body=body)
-            return redirect(request.referrer)
+            return redirect(url_for('index'))
 
     # Validate that recipient_name exists
     if User.query.filter_by(username=recipient_name).first() is None:
