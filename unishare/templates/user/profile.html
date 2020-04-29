@@ -31,7 +31,7 @@
                 <!-- <a href="" class="link-button">Edit Profile</a> -->
                 <a href="{{url_for('user.inbox')}}" class="link-button">Messages</a>
             {% else %}
-                <a href="{{url_for('user.compose', recipient_name=username)}}" class="link-button">Message</a>
+                <a href="{{url_for('user.compose', recipient_name=username, returnto=url_for('user.profile', username=username))}}" class="link-button">Message</a>
             {% endif %}
         {% endif %}
     </div>

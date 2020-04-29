@@ -1,6 +1,7 @@
 import pytest
 from unishare.database import *
 from werkzeug.security import check_password_hash, generate_password_hash
+from flask import request
 
 @pytest.mark.parametrize(('path', 'message'),(
     ('/user/test1', b'test1'),
@@ -39,13 +40,13 @@ def test_sent(client, auth):
 def test_compose(client, auth, app):
     auth.login()
     assert client.get('/messages/test3/compose').status_code == 404
-    assert client.get('/messages/test2/compose').status_code == 200
+    assert client.get('/messages/test2/compose?returnto=%2Fmessages%2Finbox').status_code == 200
     response = client.post(
-        '/messages/test2/compose',
-        data = {'subject': 'test subject', 'body' : 'test body'}
+        '/messages/test2/compose?returnto=%2Fmessages%2Finbox',
+        data = {'subject': 'test subject', 'body' : 'test body'},
     )
 
-    assert response.headers['Location'] == 'http://localhost/'
+    assert response.headers['Location'] == 'http://localhost/messages/inbox'
 
     with app.app_context():
         assert Message.query.filter_by(subject='test subject').first() is not None

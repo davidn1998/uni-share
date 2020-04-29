@@ -64,7 +64,7 @@ def sent():
 @bp.route('/messages/<recipient_name>/compose', methods=['GET', 'POST'])
 @login_required
 def compose(recipient_name):
-    '''View at /message/compose
+    '''View at /message/<recipient_name>/compose
 
     With GET -> returns HTML with a form to compose a message
 
@@ -75,6 +75,8 @@ def compose(recipient_name):
     Use the login_required decorator so the user must be logged in to visit these views,
     otherwise they are redirected to the login page
     '''
+
+    return_url = request.args.get('returnto')
 
     if request.method == 'POST':
         # Get the form values
@@ -96,7 +98,7 @@ def compose(recipient_name):
         else:
             # Create a new message and add to database
             g.user.send_message(recipient_id=recipient.id, subject=subject, body=body)
-            return redirect(url_for('index'))
+            return redirect(return_url)
 
     # Validate that recipient_name exists
     if User.query.filter_by(username=recipient_name).first() is None:

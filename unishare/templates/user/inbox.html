@@ -24,7 +24,10 @@
               <h5 class="card-title"> {{message.subject}} </h5>
               <hr>
               <p class="card-text"> {{message.body}} </p>
-
+              <hr>
+              <div class="inline-buttons">
+                <a class="link-button" href="{{url_for('user.compose', recipient_name=message.sender.username, returnto=url_for('user.inbox'))}}">Reply</a>
+              </div>
             </div>
           </div>
     </article>
