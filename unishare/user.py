@@ -100,10 +100,12 @@ def compose():
         # Validate subject and body
         if not to:
             error = 'Recipient is required.'
-        if not subject:
+        elif not subject:
             error = 'Subject is required.'
-        if not body:
+        elif not body:
             error = 'Body is required.'
+        elif not recipient:
+            error = f'User: {to} does not exist.'
 
         if error is not None:
             # Show error

@@ -60,8 +60,9 @@ def test_compose(client, auth, app):
 
 @pytest.mark.parametrize(('recipient', 'subject', 'body', 'error'), (
     ('', 'a', 'b', b'Recipient is required.'),
-    ('a','', 'b', b'Subject is required.'),
-    ('a', 'b', '',  b'Body is required.')
+    ('test2','', 'b', b'Subject is required.'),
+    ('test2', 'b', '',  b'Body is required.'),
+    ('a', 'b', 'c',  b'User: a does not exist.')
 ))
 def test_compose_validate_input(client, auth, recipient, subject, body, error):
     auth.login()
