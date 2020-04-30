@@ -11,8 +11,15 @@ def create_app(testing=False):
 
     # Overide default configuration
     if testing == False:
-        # Load the instance config when not testing
-        app.config.from_pyfile('config.py', silent=True)
+        # Load the instance config when not testing (THIS WILL NOT WORK WITH HEROKU)
+        # app.config.from_pyfile('config.py', silent=True)
+
+        # FOR HEROKU - Load environment variables from os
+        app.config.from_mapping(
+            SECRET_KEY = os.environ.get('SECRET_KEY'),
+            SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL'),
+            SQLALCHEMY_TRACK_MODIFICATIONS = False
+    )
     else:
         # Load the test config if passed in
         app.config.update(
