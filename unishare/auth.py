@@ -165,7 +165,6 @@ def load_logged_in_user():
     else:
         g.user = User.query.get(user_id)
         g.unread_messages_count = g.user.received_messages.filter_by(read=False).count()
-        print(g.unread_messages_count)
 
 @bp.route('/logout')
 def logout():
