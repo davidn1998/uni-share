@@ -23,13 +23,13 @@ def test_profile_message_edit(client, auth, path, button_text):
 @pytest.mark.parametrize('path', (
     '/messages/inbox',
     '/messages/sent',
-    '/messages/test1/compose',
+    '/messages/compose',
 ))
 def test_login_required(client, path):
     response = client.get(path)
     assert response.headers['Location'] == 'http://localhost/auth/login'
 
-def test_inbox(client, auth):
+def test_inbox(client, auth, app):
     auth.login()
     assert client.get('/messages/inbox').status_code == 200
 
@@ -39,11 +39,12 @@ def test_sent(client, auth):
 
 def test_compose(client, auth, app):
     auth.login()
-    assert client.get('/messages/test3/compose').status_code == 404
-    assert client.get('/messages/test2/compose?returnto=%2Fmessages%2Finbox').status_code == 200
+    assert client.get('/messages/compose?recipient_name=test3&returnto=%2Fmessages%2Finbox').status_code == 404
+    assert client.get('/messages/compose').status_code == 200
+    assert client.get('/messages/compose?recipient_name=test2&returnto=%2Fmessages%2Finbox').status_code == 200
     response = client.post(
-        '/messages/test2/compose?returnto=%2Fmessages%2Finbox',
-        data = {'subject': 'test subject', 'body' : 'test body'},
+        '/messages/compose?recipient_name=test2&returnto=%2Fmessages%2Finbox',
+        data = {'recipient':'test2', 'subject': 'test subject', 'body' : 'test body'},
     )
 
     assert response.headers['Location'] == 'http://localhost/messages/inbox'
@@ -57,15 +58,31 @@ def test_compose(client, auth, app):
         receiver = User.query.filter_by(username='test2').first()
         assert receiver.received_messages.filter_by(subject='test subject').first() is not None
 
-@pytest.mark.parametrize(('subject', 'body', 'error'), (
-    ('', 'a', b'Subject is required.'),
-    ('a', '', b'Body is required.')
+@pytest.mark.parametrize(('recipient', 'subject', 'body', 'error'), (
+    ('', 'a', 'b', b'Recipient is required.'),
+    ('a','', 'b', b'Subject is required.'),
+    ('a', 'b', '',  b'Body is required.')
 ))
-def test_compose_validate_input(client, auth, subject, body, error):
+def test_compose_validate_input(client, auth, recipient, subject, body, error):
     auth.login()
     response = client.post(
-        '/messages/test2/compose',
-        data = {'subject': subject, 'body' : body}
+        '/messages/compose?recipient_name=test2&returnto=%2Fmessages%2Finbox',
+        data = {'recipient': recipient,'subject': subject, 'body' : body}
         )
     
     assert error in response.data
+
+def test_read_message(client, auth, app):
+    auth.login()
+
+    with client:
+        with app.app_context():
+            User.query.get(2).send_message(recipient_id=1, subject='test', body='test')
+
+            assert Message.query.get(1).read == False
+
+            client.get('/messages/inbox')
+            
+            assert Message.query.get(1).read == True
+
+        

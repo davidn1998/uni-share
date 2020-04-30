@@ -98,6 +98,8 @@ def compose():
         recipient = User.query.filter_by(username=to).first()
 
         # Validate subject and body
+        if not to:
+            error = 'Recipient is required.'
         if not subject:
             error = 'Subject is required.'
         if not body:

@@ -163,7 +163,7 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = User.query.filter_by(id=user_id).first()
+        g.user = User.query.get(user_id)
         g.unread_messages_count = g.user.received_messages.filter_by(read=False).count()
         print(g.unread_messages_count)
 
