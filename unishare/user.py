@@ -45,8 +45,16 @@ def profile(username):
 def inbox():
     ''' Display the message inbox for the logged in user.
     '''
-    user = User.query.get(g.user.id)
-    messages = user.received_messages.order_by(Message.date.desc()).all()
+    
+    # Get all messages in descending date order
+    messages = g.user.received_messages.order_by(Message.date.desc()).all()
+
+    # Get all unread messages
+    unread_messages = g.user.received_messages.filter_by(read=False).all()
+    # Change all unread messages to read
+    for message in unread_messages:
+        message.read = True
+        db.session.commit()
 
     return render_template('user/inbox.html', messages=messages)
 
@@ -61,10 +69,10 @@ def sent():
 
     return render_template('user/sent.html', messages=messages)
 
-@bp.route('/messages/<recipient_name>/compose', methods=['GET', 'POST'])
+@bp.route('/messages/compose', methods=['GET', 'POST'])
 @login_required
-def compose(recipient_name):
-    '''View at /message/<recipient_name>/compose
+def compose():
+    '''View at /message/compose
 
     With GET -> returns HTML with a form to compose a message
 
@@ -76,16 +84,18 @@ def compose(recipient_name):
     otherwise they are redirected to the login page
     '''
 
+    # Get url to return to, if provided
     return_url = request.args.get('returnto')
 
     if request.method == 'POST':
         # Get the form values
+        to = request.form['recipient'].strip()
         subject = request.form['subject'].strip()
         body = request.form['body'].strip()
         error = None
 
         # Get recipient id
-        recipient = User.query.filter_by(username=recipient_name).first()
+        recipient = User.query.filter_by(username=to).first()
 
         # Validate subject and body
         if not subject:
@@ -94,14 +104,20 @@ def compose(recipient_name):
             error = 'Body is required.'
 
         if error is not None:
+            # Show error
             flash(error)
         else:
             # Create a new message and add to database
             g.user.send_message(recipient_id=recipient.id, subject=subject, body=body)
-            return redirect(return_url)
+            if return_url is not None:
+                return redirect(return_url)
 
-    # Validate that recipient_name exists
-    if User.query.filter_by(username=recipient_name).first() is None:
-        abort(404, f'User: {recipient_name} does not exist')
+    if request.args.get('recipient_name') is not None:
+        recipient_name = request.args.get('recipient_name')
+        # Validate that recipient_name exists
+        if User.query.filter_by(username=recipient_name).first() is None:
+            abort(404, f'User: {recipient_name} does not exist')
+    else:
+        recipient_name = ""
         
     return render_template('user/compose.html', recipient_name=recipient_name)

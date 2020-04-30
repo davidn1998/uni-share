@@ -119,9 +119,21 @@ header {
 }
 
 .unread {
-    background-color: rgb(159, 212, 255);
+    background-color: rgb(191, 226, 255);
 }
 
 .card-text {
     white-space: pre-line;
+}
+
+.messages-count {
+    color: #fff;
+}
+
+.nav-item a {
+    font-weight: 500;
+}
+
+.nav-logo {
+    height: 50px;
 }

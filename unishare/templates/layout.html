@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='/images/favicon.ico') }}">
     <title>{% block title %}{% endblock %} - UniShare</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-      <a class="navbar-brand" href="{{url_for('index')}}">UniShare</a>
+      <a class="navbar-brand" href="{{url_for('index')}}"><img class="nav-logo img-fluid" src="{{ url_for('static', filename='/images/logo2.png') }}" alt="Cannot load image"></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-content" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -22,6 +23,16 @@
           {% if g.user %}
           <li class="nav-item {% block profilecurrent %}{% endblock %}">
             <a href="{{url_for('user.profile', username=g.user.username)}}" class="nav-link">Profile</a>
+          </li>
+          <li class="nav-item {% block messagescurrent %}{% endblock %}">
+            <a href="{{url_for('user.inbox')}}" class="nav-link">Messages
+              {% if g.unread_messages_count > 0 %}
+                <span class="messages-count">
+              {% else %}
+                <span>
+              {% endif %}
+                ({{g.unread_messages_count}})
+              </span></a>
           </li>
           <li class="nav-item">
             <a href="{{url_for('auth.logout')}}" class="nav-link">Log Out</a>

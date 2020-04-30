@@ -61,13 +61,23 @@ def register():
         elif User.query.filter_by(username=username).first() is not None:
             error = f'{username} is already registered.'
 
-        # If there are no errors, create new user and commit to database
-        # Then redirect to login page
         if error is None:
+            # If there are no errors, create new user and commit to database
             user = User(username=username, password=generate_password_hash(password))
             db.session.add(user)
             print(f'{username} has successfully registered.')
             db.session.commit()
+            
+            # Send a welcome message to the user
+            creator = User.query.get(1)
+            creator.send_message(recipient_id=user.id,
+            subject='Welcome To UniShare',
+            body='''This is a blogging website for users to share information related to university. 
+                    Whether it's about uni life, courses, jobs or more, you can post here, share your thoughts and discuss with others in the community.
+
+                    David - Creator of UniShare''')
+
+            # Automatically login the user and go to index page
             return load_user_into_session(user)
         
         # Flash store error message so the template can use it
@@ -154,6 +164,8 @@ def load_logged_in_user():
         g.user = None
     else:
         g.user = User.query.filter_by(id=user_id).first()
+        g.unread_messages_count = g.user.received_messages.filter_by(read=False).count()
+        print(g.unread_messages_count)
 
 @bp.route('/logout')
 def logout():

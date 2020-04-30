@@ -8,10 +8,15 @@
 
 {% endblock  %}
 
+{% block messagescurrent %}
+    active
+{% endblock  %}
+
 {% block content %}
 <div class="inline-buttons tabs">
     <a class="link-button active-tab" href="{{url_for('user.inbox')}}">Inbox</a>
     <a class="link-button" href="{{url_for('user.sent')}}">Sent</a>
+    <a class="link-button" href="{{url_for('user.compose')}}">Create New Message</a>
 </div>
 
 <div class="posts messages">

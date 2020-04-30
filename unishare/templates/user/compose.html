@@ -1,16 +1,30 @@
 {% extends 'layout.html' %}
 
 {% block header %}
+
     {% block title %}
         New Message
     {% endblock  %}
+
+{% endblock  %}
+
+{% block messagescurrent %}
+    active
 {% endblock  %}
 
 {% block content %}
+<div class="inline-buttons tabs">
+    <a class="link-button" href="{{url_for('user.inbox')}}">Inbox</a>
+    <a class="link-button" href="{{url_for('user.sent')}}">Sent</a>
+    <a class="link-button active-tab" href="{{url_for('user.compose')}}">Create New Message</a>
+</div>
+
+<div class="posts messages">
+    
     <form class="form user-form" method="post">
         <div class="form-group">
             <label for="recipient">To</label>
-            <input type="text" class="form-control" name="recipient" id="recipient" value="{{recipient_name}}" disabled>
+            <input type="text" class="form-control" name="recipient" id="recipient" value="{{recipient_name}}">
         </div>
         <div class="form-group">
             <label for="subject">Subject</label>
@@ -24,4 +38,7 @@
             <button class="link-button max-width">Send</button>
         </div>
     </form>
+
+</div>
+
 {% endblock  %}
