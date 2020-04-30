@@ -1,1 +1,1 @@
-"web: flask db upgrade; gunicorn unishare:'create_app()'" 
+web: flask db upgrade; gunicorn unishare:'create_app()'
